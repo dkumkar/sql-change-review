@@ -1,0 +1,28 @@
+name: Validate SQL Scripts
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate SQL files
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Recurse sql -Include *.sql
+          $fail = $false
+          foreach ($file in $files) {
+              $content = Get-Content $file.FullName -Raw
+              if ($content -match 'DROP\s+TABLE|DELETE\s+FROM|TRUNCATE') {
+                  Write-Host "Risky command found in $($file.FullName)"
+                  $fail = $true
+              }
+          }
+          if ($fail) {
+              throw "Blocked due to risky SQL commands."
+          }

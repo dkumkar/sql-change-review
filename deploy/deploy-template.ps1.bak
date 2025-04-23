@@ -1,0 +1,4 @@
+# PowerShell deployment script
+
+# Example: Deploy SQL scripts to SQL Server
+Invoke-Sqlcmd -ServerInstance 'localhost' -Database 'YourDatabase' -InputFile 'sql/2025-04/001_add_sample_table.sql'
