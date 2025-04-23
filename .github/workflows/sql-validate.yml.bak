@@ -34,5 +34,5 @@ jobs:
           if ($fail) {
               throw "Blocked due to risky SQL commands."
           } else {
-              Write-Host "? All SQL files passed validation."
+              Write-Host "All SQL files passed validation."
           }
